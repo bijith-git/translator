@@ -15,17 +15,10 @@ class LanguagesApiCall {
     Uri uri = Uri.https(_baseUrl, "/language/translate/v2/languages");
     final response = await http.get(uri, headers: _headers);
     if (response.statusCode == 200) {
-      // Map data = jsonDecode(response.body);
-      // List _temp = [];
-      // for (var i in data['languages']) {
-      //   _temp.add(i['language']);
-      // }
-
-      print("success");
-      return LanguageApi.formJson(response.body);
+      var data = jsonDecode(response.body);
+      return LanguageModel.fromJson(data);
     } else {
       print("not success");
-
       throw Exception('Failed to load json data');
     }
   }

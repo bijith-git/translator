@@ -12,20 +12,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool isLoading = false;
+  bool isLoading = true;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    getData();
+
+    // getData();
   }
 
-  List<LanguageApi>? languages;
+  List<LanguageModel>? languagelist;
 
-  Future getData() async {
-    languages = await LanguagesApiCall().get();
-
-    if (languages != null) {
+  Future<List<LanguageModel>?> getData() async {
+    languagelist = await LanguagesApiCall().get();
+    print(languagelist);
+    if (languagelist != null) {
       setState(() {
         isLoading = false;
       });
@@ -46,50 +46,63 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    LanguageTile(text: "Germany"),
-                    Icon(
-                      Icons.compare_arrows,
-                      color: Colors.white,
-                    ),
-                    LanguageTile(text: "English"),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Translate From",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              TranslateBox(hint: "Enter Your Text"),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Translate to",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              TranslateBox(hint: "Enter Your Text"),
-            ],
-          ),
+          : FutureBuilder<List<LanguageModel>?>(
+              future: getData(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  print(snapshot);
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                // By default show a loading spinner.
+                return CircularProgressIndicator();
+              },
+            ),
+
+      // Column(
+      //     mainAxisAlignment: MainAxisAlignment.start,
+      //     crossAxisAlignment: CrossAxisAlignment.start,
+      //     children: [
+      //       Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: Row(
+      //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //           children: const [
+      //             LanguageTile(text: 'language'),
+      //             Icon(
+      //               Icons.compare_arrows,
+      //               color: Colors.white,
+      //             ),
+      //             LanguageTile(text: "English"),
+      //           ],
+      //         ),
+      //       ),
+      //       const SizedBox(
+      //         width: 10,
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: Text(
+      //           "Translate From",
+      //           textAlign: TextAlign.start,
+      //           style: TextStyle(color: Colors.white),
+      //         ),
+      //       ),
+      //       const SizedBox(
+      //         width: 10,
+      //       ),
+      //       TranslateBox(hint: "Enter Your Text"),
+      //       Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: Text(
+      //           "Translate to",
+      //           textAlign: TextAlign.start,
+      //           style: TextStyle(color: Colors.white),
+      //         ),
+      //       ),
+      //       TranslateBox(hint: "Enter Your Text"),
+      //     ],
+      //   ),
     );
   }
 }
