@@ -23,8 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<LanguageModel>? languagelist;
 
   Future<List<LanguageModel>?> getData() async {
-    languagelist = await LanguagesApiCall().get();
-    print(languagelist);
+    languagelist = await LanguagesApiCall().getLanguages();
     if (languagelist != null) {
       setState(() {
         isLoading = false;
@@ -34,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("language:$languagelist");
     return Scaffold(
         backgroundColor: Colors.black.withOpacity(.5),
         appBar: AppBar(
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         body: isLoading
-            ? CircularProgressIndicator()
+            ? Center(child: CircularProgressIndicator())
             : Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

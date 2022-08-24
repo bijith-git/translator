@@ -11,12 +11,12 @@ class LanguagesApiCall {
     'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com'
   };
 
-  Future get() async {
+  Future getLanguages() async {
     Uri uri = Uri.https(_baseUrl, "/language/translate/v2/languages");
     final response = await http.get(uri, headers: _headers);
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      return LanguageModel.fromJson(data);
+      return languageModelToJson(data);
     } else {
       print("not success");
       throw Exception('Failed to load json data');
