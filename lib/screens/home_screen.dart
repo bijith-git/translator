@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    // getData();
+    getData();
   }
 
   List<LanguageModel>? languagelist;
@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print(languagelist);
     if (languagelist != null) {
       setState(() {
-        isLoading = true;
+        isLoading = false;
       });
     }
   }
@@ -44,49 +44,51 @@ class _HomeScreenState extends State<HomeScreen> {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  LanguageTile(text: 'language'),
-                  Icon(
-                    Icons.compare_arrows,
-                    color: Colors.white,
+        body: isLoading
+            ? CircularProgressIndicator()
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: const [
+                        LanguageTile(text: 'language'),
+                        Icon(
+                          Icons.compare_arrows,
+                          color: Colors.white,
+                        ),
+                        LanguageTile(text: "English"),
+                      ],
+                    ),
                   ),
-                  LanguageTile(text: "English"),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Translate From",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  TranslateBox(hint: "Enter Your Text"),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Translate to",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  TranslateBox(hint: "Enter Your Text"),
                 ],
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Translate From",
-                textAlign: TextAlign.start,
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            TranslateBox(hint: "Enter Your Text"),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Translate to",
-                textAlign: TextAlign.start,
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            TranslateBox(hint: "Enter Your Text"),
-          ],
-        ));
+              ));
   }
 }
