@@ -21,7 +21,6 @@ class LanguageModel {
         "data": data.toJson(),
       };
 }
-
 class Data {
   Data({
     required this.languages,
