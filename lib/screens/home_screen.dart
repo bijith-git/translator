@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:translator/components/language_tile.dart';
-import 'package:translator/components/translate.dart';
-import 'package:translator/model/language_model.dart';
-import 'package:translator/services/languages.dart';
+import 'package:translatorapp/components/language_tile.dart';
+import 'package:translatorapp/components/translate.dart';
+import 'package:translatorapp/model/language_model.dart';
+import 'package:translatorapp/services/languages.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,17 +13,20 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
+
+  TextEditingController translateto = TextEditingController();
+  TextEditingController translatefrom = TextEditingController();
+
   @override
   void initState() {
     super.initState();
-
-    getData();
+    // getData();
   }
 
   List<LanguageModel>? languagelist;
 
   Future<List<LanguageModel>?> getData() async {
-    languagelist = await LanguagesApiCall().getLanguages();
+    languagelist = await LanguagesApiCall().get();
     if (languagelist != null) {
       setState(() {
         isLoading = false;
@@ -33,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("language:$languagelist");
     return Scaffold(
         backgroundColor: Colors.black.withOpacity(.5),
         appBar: AppBar(
@@ -64,30 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Translate From",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  TranslateBox(hint: "Enter Your Text"),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Translate to",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  TranslateBox(hint: "Enter Your Text"),
+                  TranslateBox(),
                 ],
               ));
   }
